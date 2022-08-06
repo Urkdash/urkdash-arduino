@@ -9,9 +9,11 @@
 
 class DashTemplate {
   public:
+    // User functions
     bool output(int position, String value);
     bool input(int position);
     void setup_ntp();
+    //Template functions
     void process_incoming_message(String topic, String incoming);
     void callback(char* topic, byte* payload, unsigned int length);
     void send_data_to_broker();
