@@ -9,16 +9,20 @@
 const char *wifi_ssid = "FamiliaLariosMedina ";        // your network SSID (name)
 const char *wifi_password = "familialariosmedina2071"; // your network password
 
+String dev_id = "645421";
+String webhook_password = "z6VjoNDVOk";
+
 DashTemplate dash;
 
-WiFiClient espclient;
-PubSubClient client(espclient);
+String topic;
+String incoming;
 
-//Functions
+// Functions
 void setup_wifi();
 void msg(String topic, String msg);
 void callback(char *topic, byte *payload, unsigned int length);
 void plantilla_dash();
+void data();
 
 void setup_wifi()
 {
@@ -95,24 +99,21 @@ void setup_wifi()
 
 void setup()
 {
-  Serial.begin(921600);         // Serial Monitor Begin
-  pinMode(LED_PIN, OUTPUT);     // LED Pin Mode
-  dash.clear();                 // clear the screen
-  setup_wifi();                 // setup wifi connection
-  dash.setup_ntp();             // setup ntp connection
-  client.setCallback(callback); // Set callback function
+  Serial.begin(9600);       // Serial Monitor Begin
+  pinMode(LED_PIN, OUTPUT); // LED Pin Mode
+  dash.setup_credentials(dev_id, webhook_password);
+  dash.clear();             // clear the screen
+  setup_wifi();             // setup wifi connection
+  dash.setup_ntp(); // setup ntp connection
+  // client.setCallback(callback); // Set callback function
 }
 
 void loop()
 {
   dash.check_mqtt_connection(); // check mqtt connection
-  plantilla_dash();                  // plantilla
+  plantilla_dash();             // plantilla
+  data();                       // data
 }
-
-// void msg(String topic, String incoming)
-// {
-  
-// }
 
 void callback(char *topic, byte *payload, unsigned int length)
 {
@@ -129,17 +130,20 @@ void callback(char *topic, byte *payload, unsigned int length)
   dash.process_incoming_message(String(topic), incoming);
 }
 
-void plantilla_dash(String topic, String incoming)
+void plantilla_dash()
 {
-  dash.process_incoming_message(topic, incoming);
-  dash.get_mqtt_credentials();
+  dash.process_incoming_message(String(topic), incoming);
+  callback;
   dash.send_data_to_broker();
-  dash.reconnect();
-  dash.clear();
-  dash.print_stats();
 }
 
-void user(int position, String value){
-  dash.input(position);
-  dash.output(position, value);
+void data()
+{
+  int area = random(20, 30);
+  int wifi = random(-70, -35);
+  int tank = random(0, 100);
+
+  dash.input(0, String(area));
+  dash.input(1, String(wifi));
+  dash.input(2, String(tank));
 }
