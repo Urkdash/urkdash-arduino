@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <WiFi.h>
 #include "urkdash.h"
 
 DashTemplate dash;
