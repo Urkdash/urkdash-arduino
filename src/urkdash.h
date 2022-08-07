@@ -6,6 +6,7 @@
 #define NTP_INTERVAL 60 * 1000
 #define MQTT_SERVER "20.38.170.0"
 #define MQTT_PORT 1883
+#define WEBHOOK_ENDPOINT "http://20.38.170.0:3001/api/getdevicecredentials"
 
 #include <Arduino.h>
 
@@ -27,6 +28,5 @@ class DashTemplate {
   private:
     String dId;
     String webhook_pass;
-    String webhook_endpoint;
 };
 #endif 

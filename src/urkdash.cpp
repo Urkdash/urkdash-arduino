@@ -32,6 +32,7 @@ void check_mqtt_connection();
 bool reconnect();
 void process_sensors();
 void process_actuators();
+void set_callback();
 void send_data_to_broker();
 void callback(char *topic, byte *payload, unsigned int length);
 void process_incoming_msg(String topic, String incoming);
@@ -82,7 +83,7 @@ bool DashTemplate::get_mqtt_credentials()
 
     String toSend = "dId=" + dId + "&password=" + webhook_pass;
 
-    http.begin(webhook_endpoint);
+    http.begin(WEBHOOK_ENDPOINT);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     int response_code = http.POST(toSend);
@@ -186,6 +187,7 @@ void DashTemplate::callback(char *topic, byte *payload, unsigned int length)
 
     process_incoming_msg(String(topic), incoming);
 }
+
 
 void DashTemplate::send_data_to_broker()
 {
