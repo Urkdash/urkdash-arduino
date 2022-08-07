@@ -188,6 +188,11 @@ void DashTemplate::callback(char *topic, byte *payload, unsigned int length)
     process_incoming_msg(String(topic), incoming);
 }
 
+void DashTemplate::set_callback()
+{
+   client.setCallback(callback);
+}
+
 void DashTemplate::send_data_to_broker()
 {
     long now = millis();

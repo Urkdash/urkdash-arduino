@@ -19,8 +19,7 @@ String incoming;
 
 // Functions
 void setup_wifi();
-void msg(String topic, String msg);
-void callback(char *topic, byte *payload, unsigned int length);
+// void callback(char *topic, byte *payload, unsigned int length);
 void plantilla_dash();
 void data();
 
@@ -99,13 +98,13 @@ void setup_wifi()
 
 void setup()
 {
-  Serial.begin(9600);       // Serial Monitor Begin
-  pinMode(LED_PIN, OUTPUT); // LED Pin Mode
-  dash.setup_credentials(dev_id, webhook_password);
-  dash.clear();             // clear the screen
-  setup_wifi();             // setup wifi connection
-  dash.setup_ntp(); // setup ntp connection
-  // client.setCallback(callback); // Set callback function
+  Serial.begin(9600);                               // Serial Monitor Begin
+  pinMode(LED_PIN, OUTPUT);                         // LED Pin Mode
+  dash.setup_credentials(dev_id, webhook_password); // Setting up Credentials (important: it has to be in this place)
+  dash.clear();                                     // clear the screen
+  setup_wifi();                                     // setup wifi connection
+  dash.setup_ntp();                                 // setup ntp connection
+  dash.set_callback();                              // set callback function
 }
 
 void loop()
@@ -115,25 +114,25 @@ void loop()
   data();                       // data
 }
 
-void callback(char *topic, byte *payload, unsigned int length)
-{
+// void callback(char *topic, byte *payload, unsigned int length)
+// {
 
-  String incoming = "";
+//   String incoming = "";
 
-  for (int i = 0; i < length; i++)
-  {
-    incoming += (char)payload[i];
-  }
+//   for (int i = 0; i < length; i++)
+//   {
+//     incoming += (char)payload[i];
+//   }
 
-  incoming.trim();
+//   incoming.trim();
 
-  dash.process_incoming_message(String(topic), incoming);
-}
+//   dash.process_incoming_message(String(topic), incoming);
+// }
 
 void plantilla_dash()
 {
   dash.process_incoming_message(String(topic), incoming);
-  callback;
+  // callback;
   dash.send_data_to_broker();
 }
 

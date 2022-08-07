@@ -19,6 +19,7 @@ class DashTemplate {
     // Template functions
     bool get_mqtt_credentials();
     bool reconnect();
+    void set_callback();
     void setup_credentials(String dId, String webhook_pass);
     void process_incoming_message(String topic, String incoming);
     void callback(char* topic, byte* payload, unsigned int length);
