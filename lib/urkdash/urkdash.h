@@ -15,14 +15,13 @@ class DashTemplate
 public:
   // User functions
   void input(int position, String value);
-  String output(int position);
+  void output(int position);
   void setup_ntp();
   // Template functions
   bool get_mqtt_credentials();
   bool reconnect();
   void setup_credentials(String dId, String webhook_pass);
   void process_incoming_message(String topic, String incoming);
-  /* void callback(char *topic, byte *payload, unsigned int length); */
   void send_data_to_broker();
   void check_mqtt_connection();
   void clear();

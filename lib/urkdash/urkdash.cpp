@@ -22,6 +22,7 @@ String last_received_topic = "";
 long varsLastSend[20];
 long lastReconnectAttemp = 0;
 long lastStats = 0;
+int widget_position;
 String device_id;
 String device_pass;
 DynamicJsonDocument mqtt_data_doc(2048);
@@ -30,12 +31,15 @@ DynamicJsonDocument mqtt_data_doc(2048);
 bool get_mqtt_credentials();
 void check_mqtt_connection();
 bool reconnect();
+void output(int position);
+void outputs();
 void send_data_to_broker();
 void callback(char *topic, byte *payload, unsigned int length);
 void process_incoming_msg(String topic, String incoming);
-void print_stats();
 void clear();
+void print_stats();
 
+// TEMPLATE FUNCTIONS
 void callback(char *topic, byte *payload, unsigned int length)
 {
     String incoming = "";
@@ -67,6 +71,8 @@ void callback(char *topic, byte *payload, unsigned int length)
             mqtt_data_doc["variables"][i]["counter"] = counter;
         }
     }
+
+    outputs();
 }
 
 void DashTemplate::setup_ntp()
@@ -79,22 +85,25 @@ void DashTemplate::setup_ntp()
     client.setCallback(callback);
 }
 
-String DashTemplate::output(int position)
+void outputs()
 {
-    if (mqtt_data_doc["variables"][position]["value"] == "true")
+    if (mqtt_data_doc["variables"][widget_position]["last"]["value"] == "true")
     {
-        mqtt_data_doc["variables"][position]["value"] = "";
-        return "true";
+        Serial.println("Message received: true");
     }
-    else if (mqtt_data_doc["variables"][position]["value"] == "false")
+    else if (mqtt_data_doc["variables"][widget_position]["last"]["value"] == "false")
     {
-        mqtt_data_doc["variables"][position]["value"] = "";
-        return "false";
+        Serial.println("Message received: false");
     }
-    else
+    else if (mqtt_data_doc["variables"][widget_position]["last"]["value"] == "restart")
     {
-        return mqtt_data_doc["variables"][position]["value"];
+        ESP.restart();
     }
+}
+
+void DashTemplate::output(int position)
+{
+    widget_position = position;
 }
 
 void DashTemplate::input(int position, String value)
@@ -261,7 +270,7 @@ void DashTemplate::print_stats()
 
         Serial.print("\n");
         Serial.print("\n╔══════════════════════════╗");
-        Serial.print("\n║       SYSTEM STATS     ║");
+        Serial.print("\n║       SYSTEM STATS       ║");
         Serial.print("\n╚══════════════════════════╝");
         Serial.print("\n\n");
         Serial.print("\n\n");

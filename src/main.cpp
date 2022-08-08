@@ -6,11 +6,11 @@
 
 #define LED_PIN 2
 
-const char *wifi_ssid = "Extensor1";     // your network SSID (name)
-const char *wifi_password = "julian123"; // your network password
+const char *wifi_ssid = "FamiliaLariosMedina ";     // your network SSID (name)
+const char *wifi_password = "familialariosmedina2071"; // your network password
 
-String dev_id = "133545";
-String webhook_password = "lNmQVt823S";
+String dev_id = "463425";
+String webhook_password = "IT8znYoW4C";
 
 DashTemplate dash;
 
@@ -113,30 +113,18 @@ void loop()
 
 void data()
 {
-  int area = random(20, 30);
-  int wifi = random(-70, -35);
-  int tank = random(0, 100);
-  int battery = random(0, 100);
-  int temp = random(15, 40);
-  int humidity = random(0, 100);
+  // int area = random(20, 30);
+  // int wifi = random(-70, -35);
+  // int tank = random(0, 100);
+  // int battery = random(0, 100);
+  // int temp = random(15, 40);
+  // int humidity = random(0, 100);
 
-  dash.input(0, String(battery));
-  dash.input(1, String(area));
-  dash.input(2, String(area));
-  if (dash.output(0) == "true")
-  {
-    ESP.restart();
-  }
-  if (dash.output(1) == "false")
-  {
-    ESP.restart();
-  }
-  if (dash.output(2) == "true")
-  {
-    ESP.restart();
-  }
-  else if (dash.output(2) == "false")
-  {
-    Serial.println("No restart");
-  }
+  // dash.input(0, String(battery));
+  // dash.input(1, String(area));
+  // dash.input(2, String(area));
+  
+  dash.output(0);
+  dash.output(1);
+
 }
