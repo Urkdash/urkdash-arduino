@@ -30,12 +30,44 @@ DynamicJsonDocument mqtt_data_doc(2048);
 bool get_mqtt_credentials();
 void check_mqtt_connection();
 bool reconnect();
-void set_callback();
 void send_data_to_broker();
 void callback(char *topic, byte *payload, unsigned int length);
 void process_incoming_msg(String topic, String incoming);
 void print_stats();
 void clear();
+
+void callback(char *topic, byte *payload, unsigned int length)
+{
+    String incoming = "";
+
+    for (int i = 0; i < length; i++)
+    {
+        incoming += (char)payload[i];
+    }
+
+    incoming.trim();
+
+    last_received_topic = topic;
+    last_received_msg = incoming;
+
+    String variable = splitter.split(topic, '/', 2);
+
+    for (int i = 0; i < mqtt_data_doc["variables"].size(); i++)
+    {
+
+        if (mqtt_data_doc["variables"][i]["variable"] == variable)
+        {
+
+            DynamicJsonDocument doc(256);
+            deserializeJson(doc, incoming);
+            mqtt_data_doc["variables"][i]["last"] = doc;
+
+            long counter = mqtt_data_doc["variables"][i]["counter"];
+            counter++;
+            mqtt_data_doc["variables"][i]["counter"] = counter;
+        }
+    }
+}
 
 void DashTemplate::setup_ntp()
 {
@@ -44,19 +76,20 @@ void DashTemplate::setup_ntp()
     {
         timeClient.forceUpdate();
     }
+    client.setCallback(callback);
 }
 
-bool DashTemplate::output(int position)
+String DashTemplate::output(int position)
 {
     if (mqtt_data_doc["variables"][position]["value"] == "true")
     {
         mqtt_data_doc["variables"][position]["value"] = "";
-        return true;
+        return "true";
     }
     else if (mqtt_data_doc["variables"][position]["value"] == "false")
     {
         mqtt_data_doc["variables"][position]["value"] = "";
-        return false;
+        return "false";
     }
     else
     {
@@ -150,49 +183,6 @@ bool DashTemplate::reconnect()
     return true;
 }
 
-void DashTemplate::process_incoming_message(String topic, String incoming)
-{
-    last_received_topic = topic;
-    last_received_msg = incoming;
-
-    String variable = splitter.split(topic, '/', 2);
-
-    for (int i = 0; i < mqtt_data_doc["variables"].size(); i++)
-    {
-
-        if (mqtt_data_doc["variables"][i]["variable"] == variable)
-        {
-
-            DynamicJsonDocument doc(256);
-            deserializeJson(doc, incoming);
-            mqtt_data_doc["variables"][i]["last"] = doc;
-
-            long counter = mqtt_data_doc["variables"][i]["counter"];
-            counter++;
-            mqtt_data_doc["variables"][i]["counter"] = counter;
-        }
-    }
-}
-
-void DashTemplate::callback(char *topic, byte *payload, unsigned int length)
-{
-    String incoming = "";
-
-    for (int i = 0; i < length; i++)
-    {
-        incoming += (char)payload[i];
-    }
-
-    incoming.trim();
-
-    process_incoming_msg(String(topic), incoming);
-}
-
-void DashTemplate::set_callback()
-{
-   client.setCallback(callback);
-}
-
 void DashTemplate::send_data_to_broker()
 {
     long now = millis();
@@ -271,7 +261,7 @@ void DashTemplate::print_stats()
 
         Serial.print("\n");
         Serial.print("\n╔══════════════════════════╗");
-        Serial.print("\n║       SYSTEM STATS       ║");
+        Serial.print("\n║       SYSTEM STATS     ║");
         Serial.print("\n╚══════════════════════════╝");
         Serial.print("\n\n");
         Serial.print("\n\n");

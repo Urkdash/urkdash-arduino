@@ -6,11 +6,11 @@
 
 #define LED_PIN 2
 
-const char *wifi_ssid = "FamiliaLariosMedina ";        // your network SSID (name)
-const char *wifi_password = "familialariosmedina2071"; // your network password
+const char *wifi_ssid = "Extensor1";     // your network SSID (name)
+const char *wifi_password = "julian123"; // your network password
 
-String dev_id = "645421";
-String webhook_password = "z6VjoNDVOk";
+String dev_id = "133545";
+String webhook_password = "lNmQVt823S";
 
 DashTemplate dash;
 
@@ -19,8 +19,6 @@ String incoming;
 
 // Functions
 void setup_wifi();
-// void callback(char *topic, byte *payload, unsigned int length);
-void plantilla_dash();
 void data();
 
 void setup_wifi()
@@ -98,42 +96,19 @@ void setup_wifi()
 
 void setup()
 {
-  Serial.begin(9600);                               // Serial Monitor Begin
-  pinMode(LED_PIN, OUTPUT);                         // LED Pin Mode
-  dash.setup_credentials(dev_id, webhook_password); // Setting up Credentials (important: it has to be in this place)
-  dash.clear();                                     // clear the screen
-  setup_wifi();                                     // setup wifi connection
-  dash.setup_ntp();                                 // setup ntp connection
-  dash.set_callback();                              // set callback function
+  Serial.begin(9600);       // Serial Monitor Begin
+  pinMode(LED_PIN, OUTPUT); // LED Pin Mode
+  dash.setup_credentials(dev_id, webhook_password);
+  dash.clear();     // clear the screen
+  setup_wifi();     // setup wifi connection
+  dash.setup_ntp(); // setup ntp connection
 }
 
 void loop()
 {
+  data();
   dash.check_mqtt_connection(); // check mqtt connection
-  plantilla_dash();             // plantilla
-  data();                       // data
-}
-
-// void callback(char *topic, byte *payload, unsigned int length)
-// {
-
-//   String incoming = "";
-
-//   for (int i = 0; i < length; i++)
-//   {
-//     incoming += (char)payload[i];
-//   }
-
-//   incoming.trim();
-
-//   dash.process_incoming_message(String(topic), incoming);
-// }
-
-void plantilla_dash()
-{
-  dash.process_incoming_message(String(topic), incoming);
-  // callback;
-  dash.send_data_to_broker();
+  dash.send_data_to_broker();   // plantilla
 }
 
 void data()
@@ -141,8 +116,27 @@ void data()
   int area = random(20, 30);
   int wifi = random(-70, -35);
   int tank = random(0, 100);
+  int battery = random(0, 100);
+  int temp = random(15, 40);
+  int humidity = random(0, 100);
 
-  dash.input(0, String(area));
-  dash.input(1, String(wifi));
-  dash.input(2, String(tank));
+  dash.input(0, String(battery));
+  dash.input(1, String(area));
+  dash.input(2, String(area));
+  if (dash.output(0) == "true")
+  {
+    ESP.restart();
+  }
+  if (dash.output(1) == "false")
+  {
+    ESP.restart();
+  }
+  if (dash.output(2) == "true")
+  {
+    ESP.restart();
+  }
+  else if (dash.output(2) == "false")
+  {
+    Serial.println("No restart");
+  }
 }
