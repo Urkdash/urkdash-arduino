@@ -34,7 +34,6 @@ bool reconnect();
 String outputs();
 void send_data_to_broker();
 void callback(char *topic, byte *payload, unsigned int length);
-void process_incoming_msg(String topic, String incoming);
 void clear();
 void print_stats();
 
@@ -84,7 +83,7 @@ void DashTemplate::setup_ntp()
     client.setCallback(callback);
 }
 
-String DashTemplate::output(int position)
+String DashTemplate::receive_data(int position)
 {
    widget_position = position;
    return outputs();
@@ -95,10 +94,10 @@ String outputs()
     return mqtt_data_doc["variables"][widget_position]["last"]["value"];
 }
 
-void DashTemplate::input(int position, String value)
+void DashTemplate::send_data(int position, bool save, String value)
 {
     mqtt_data_doc["variables"][position]["last"]["value"] = value;
-    mqtt_data_doc["variables"][position]["last"]["save"] = 1;
+    mqtt_data_doc["variables"][position]["last"]["save"] = save;
     mqtt_data_doc["variables"][position]["last"]["lastSending"] = timeClient.getEpochTime();
 }
 

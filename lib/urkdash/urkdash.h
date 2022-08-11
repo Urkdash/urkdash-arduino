@@ -14,8 +14,8 @@ class DashTemplate
 {
 public:
   // User functions
-  void input(int position, String value);
-  String output(int position);
+  void send_data(int position, bool save, String value);
+  String receive_data(int position);
   void setup_ntp();
   // Template functions
   bool get_mqtt_credentials();
