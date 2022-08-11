@@ -31,8 +31,7 @@ DynamicJsonDocument mqtt_data_doc(2048);
 bool get_mqtt_credentials();
 void check_mqtt_connection();
 bool reconnect();
-void output(int position);
-void outputs();
+String outputs();
 void send_data_to_broker();
 void callback(char *topic, byte *payload, unsigned int length);
 void process_incoming_msg(String topic, String incoming);
@@ -85,25 +84,15 @@ void DashTemplate::setup_ntp()
     client.setCallback(callback);
 }
 
-void outputs()
+String DashTemplate::output(int position)
 {
-    if (mqtt_data_doc["variables"][widget_position]["last"]["value"] == "true")
-    {
-        Serial.println("Message received: true");
-    }
-    else if (mqtt_data_doc["variables"][widget_position]["last"]["value"] == "false")
-    {
-        Serial.println("Message received: false");
-    }
-    else if (mqtt_data_doc["variables"][widget_position]["last"]["value"] == "restart")
-    {
-        ESP.restart();
-    }
+   widget_position = position;
+   return outputs();
 }
 
-void DashTemplate::output(int position)
+String outputs()
 {
-    widget_position = position;
+    return mqtt_data_doc["variables"][widget_position]["last"]["value"];
 }
 
 void DashTemplate::input(int position, String value)
