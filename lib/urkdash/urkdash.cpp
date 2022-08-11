@@ -97,7 +97,7 @@ String outputs()
 void DashTemplate::send_data(int position, bool save, String value)
 {
     mqtt_data_doc["variables"][position]["last"]["value"] = value;
-    mqtt_data_doc["variables"][position]["last"]["save"] = save;
+    mqtt_data_doc["variables"][position]["last"]["save"] = int(save);
     mqtt_data_doc["variables"][position]["last"]["lastSending"] = timeClient.getEpochTime();
 }
 
