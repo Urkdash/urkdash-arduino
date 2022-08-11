@@ -85,8 +85,8 @@ void DashTemplate::setup_ntp()
 
 String DashTemplate::receive_data(int position)
 {
-   widget_position = position;
-   return outputs();
+    widget_position = position;
+    return outputs();
 }
 
 String outputs()
@@ -99,6 +99,16 @@ void DashTemplate::send_data(int position, bool save, String value)
     mqtt_data_doc["variables"][position]["last"]["value"] = value;
     mqtt_data_doc["variables"][position]["last"]["save"] = int(save);
     mqtt_data_doc["variables"][position]["last"]["lastSending"] = timeClient.getEpochTime();
+}
+
+void DashTemplate::map_data(int position, float lat, float lng)
+{
+    // mqtt_data_doc["variables"][position]["last"]["value"]["lat"] = lat;
+    // mqtt_data_doc["variables"][position]["last"]["value"]["lng"] = lng;
+    mqtt_data_doc["variables"][position]["last"]["lat"] = lat;
+    mqtt_data_doc["variables"][position]["last"]["lng"] = lng;
+    // mqtt_data_doc["variables"][position]["last"]["save"] = int(save);
+    // mqtt_data_doc["variables"][position]["last"]["lastSending"] = timeClient.getEpochTime();
 }
 
 void DashTemplate::setup_credentials(String dId, String webhook_pass)

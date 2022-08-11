@@ -15,6 +15,7 @@ class DashTemplate
 public:
   // User functions
   void send_data(int position, bool save, String value);
+  void map_data(int position, float lat, float lng); // Map widget data
   String receive_data(int position);
   void setup_ntp();
   // Template functions

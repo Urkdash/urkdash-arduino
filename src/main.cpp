@@ -1,21 +1,18 @@
+// Libraries
 #include <Arduino.h>
 #include <WiFi.h>
-#include <PubSubClient.h>
 #include "Colors.h"
 #include "urkdash.h"
 
 #define LED_PIN 2
 
-const char *wifi_ssid = "FamiliaLariosMedina ";     // your network SSID (name)
+const char *wifi_ssid = "FamiliaLariosMedina ";        // your network SSID (name)
 const char *wifi_password = "familialariosmedina2071"; // your network password
 
-String dev_id = "463425";
-String webhook_password = "IT8znYoW4C";
+String dev_id = "3532";               // your device id
+String webhook_password = "Zw8JKCBuTT"; // your device password
 
 DashTemplate dash;
-
-String topic;
-String incoming;
 
 // Functions
 void setup_wifi();
@@ -96,47 +93,26 @@ void setup_wifi()
 
 void setup()
 {
-  Serial.begin(9600);       // Serial Monitor Begin
-  pinMode(LED_PIN, OUTPUT); // LED Pin Mode
-  dash.setup_credentials(dev_id, webhook_password);
-  dash.clear();     // clear the screen
-  setup_wifi();     // setup wifi connection
-  dash.setup_ntp(); // setup ntp connection
+  Serial.begin(9600);                               // Serial Monitor Begin
+  pinMode(LED_PIN, OUTPUT);                         // LED Pin Mode
+  dash.setup_credentials(dev_id, webhook_password); // Setup Credentials
+  dash.clear();                                     // clear the screen
+  setup_wifi();                                     // setup wifi connection
+  dash.setup_ntp();                                 // setup ntp connection
 }
 
 void loop()
 {
-  data();
+  data();                       // get data from the dashboard
   dash.check_mqtt_connection(); // check mqtt connection
-  dash.send_data_to_broker();   // plantilla
+  dash.send_data_to_broker();   // send data to broker
 }
 
 void data()
 {
-  // int area = random(20, 30);
-  // int wifi = random(-70, -35);
-  // int tank = random(0, 100);
-  // int battery = random(0, 100);
-  // int temp = random(15, 40);
-  // int humidity = random(0, 100);
+  // Data example
+  float latitude =  6.193850;
+  float longitude = -75.596476;
 
-  // dash.input(0, String(battery));
-  // dash.input(1, String(area));
-  // dash.input(2, String(area));
-  
- if (dash.receive_data(1) == "restart")
-  {
-    Serial.println("Restarting...");
-    delay(2000);
-    ESP.restart();
-  }
-  
- if (dash.receive_data(2) == "true")
-  {
-    digitalWrite(LED_PIN, LOW);
-  }
-  else if (dash.receive_data(2) == "false")
-  {
-    digitalWrite(LED_PIN, HIGH);
-  }
+  dash.map_data(0, latitude, longitude); // send data to the dashboard
 }
