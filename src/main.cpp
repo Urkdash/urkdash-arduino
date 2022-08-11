@@ -124,18 +124,18 @@ void data()
   // dash.input(1, String(area));
   // dash.input(2, String(area));
   
- if (dash.output(1) == "restart")
+ if (dash.receive_data(1) == "restart")
   {
     Serial.println("Restarting...");
     delay(2000);
     ESP.restart();
   }
   
- if (dash.output(2) == "true")
+ if (dash.receive_data(2) == "true")
   {
     digitalWrite(LED_PIN, LOW);
   }
-  else if (dash.output(2) == "false")
+  else if (dash.receive_data(2) == "false")
   {
     digitalWrite(LED_PIN, HIGH);
   }
