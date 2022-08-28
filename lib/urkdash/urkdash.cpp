@@ -23,6 +23,8 @@ long varsLastSend[20];
 long lastReconnectAttemp = 0;
 long lastStats = 0;
 int widget_position;
+int period = 10000;
+unsigned long time_now = 0;
 String device_id;
 String device_pass;
 DynamicJsonDocument mqtt_data_doc(2048);
@@ -31,7 +33,9 @@ DynamicJsonDocument mqtt_data_doc(2048);
 bool get_mqtt_credentials();
 void check_mqtt_connection();
 bool reconnect();
+void info_devices();
 String outputs();
+String getDate();
 void send_data_to_broker();
 void callback(char *topic, byte *payload, unsigned int length);
 void clear();
@@ -99,16 +103,34 @@ void DashTemplate::send_data(int position, bool save, String value)
     mqtt_data_doc["variables"][position]["last"]["value"] = value;
     mqtt_data_doc["variables"][position]["last"]["save"] = int(save);
     mqtt_data_doc["variables"][position]["last"]["lastSending"] = timeClient.getEpochTime();
+    info_devices();
 }
 
-void DashTemplate::map_data(int position, float lat, float lng)
+void DashTemplate::map_data(int position, bool save, String lat, String lng)
 {
-    // mqtt_data_doc["variables"][position]["last"]["value"]["lat"] = lat;
-    // mqtt_data_doc["variables"][position]["last"]["value"]["lng"] = lng;
-    mqtt_data_doc["variables"][position]["last"]["lat"] = lat;
-    mqtt_data_doc["variables"][position]["last"]["lng"] = lng;
-    // mqtt_data_doc["variables"][position]["last"]["save"] = int(save);
-    // mqtt_data_doc["variables"][position]["last"]["lastSending"] = timeClient.getEpochTime();
+    lat.concat("/");
+    lat.concat(lng);
+    mqtt_data_doc["variables"][position]["last"]["value"] = lat;
+    mqtt_data_doc["variables"][position]["last"]["save"] = int(save);
+    mqtt_data_doc["variables"][position]["last"]["lastSending"] = timeClient.getEpochTime();
+}
+
+void info_devices()
+{
+    mqtt_data_doc["info"]["ssid"] = WiFi.SSID();
+    mqtt_data_doc["info"]["rssi"] = WiFi.RSSI();
+    mqtt_data_doc["info"]["ip"] = WiFi.localIP().toString();
+    mqtt_data_doc["info"]["mac"] = WiFi.macAddress();
+    mqtt_data_doc["info"]["lastKeepAlive"] = getDate();
+    mqtt_data_doc["info"]["lastRestart"] = getDate();
+    mqtt_data_doc["info"]["firmwareVersion"] = "ESP32";
+}
+
+String getDate(){
+  String dateString = "";
+  timeClient.update();
+  dateString = timeClient.getFormattedTime();
+  return dateString;
 }
 
 void DashTemplate::setup_credentials(String dId, String webhook_pass)
@@ -224,6 +246,18 @@ void DashTemplate::send_data_to_broker()
             mqtt_data_doc["variables"][i]["counter"] = counter;
         }
     }
+    if (millis() >= time_now + period)
+    {
+        time_now += period;
+        String str_root_topic = mqtt_data_doc["topic"];
+        int str_variable = random(1, 9999);
+        String topic = str_root_topic + String(str_variable) + "/idevice";
+        String toSend = "";
+
+        serializeJson(mqtt_data_doc["info"], toSend);
+
+        client.publish(topic.c_str(), toSend.c_str());
+    }
 }
 
 void DashTemplate::check_mqtt_connection()
@@ -286,8 +320,6 @@ void DashTemplate::print_stats()
 
             Serial.println(String(i) + " \t " + variableFullName.substring(0, 5) + " \t\t " + variable.substring(0, 10) + " \t " + variableType.substring(0, 5) + " \t\t " + String(counter).substring(0, 10) + " \t\t " + lastMsg);
         }
-
-        // Serial.print( "\n\n Free RAM -> "  + ESP.getFreeHeap() + " Bytes");
 
         Serial.print("\n\n Last Incomming Msg -> " + last_received_msg);
     }

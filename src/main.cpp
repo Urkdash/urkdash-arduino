@@ -9,8 +9,8 @@
 const char *wifi_ssid = "FamiliaLariosMedina ";        // your network SSID (name)
 const char *wifi_password = "familialariosmedina2071"; // your network password
 
-String dev_id = "3532";               // your device id
-String webhook_password = "Zw8JKCBuTT"; // your device password
+String dev_id = "12345";               // your device id
+String webhook_password = "ZulOMFkyHI"; // your device password
 
 DashTemplate dash;
 
@@ -113,6 +113,8 @@ void data()
   // Data example
   float latitude =  6.193850;
   float longitude = -75.596476;
+  int temp = random(0, 100);
 
-  dash.map_data(0, latitude, longitude); // send data to the dashboard
+  dash.map_data(0, true, String(latitude, 7), String(longitude, 7)); // send data to the dashboard
+  dash.send_data(1, true, String(temp));  // send data to the dashboard
 }
