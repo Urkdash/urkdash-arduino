@@ -4,9 +4,9 @@
 #define NTP_ADRESS "co.pool.ntp.org"
 #define NTP_OFFSET 0
 #define NTP_INTERVAL 60 * 1000
-#define MQTT_SERVER "ceresdash.online"
+#define MQTT_SERVER "192.168.20.23"
 #define MQTT_PORT 1883
-#define WEBHOOK_ENDPOINT "http://ceresdash.online:3001/api/getdevicecredentials"
+#define WEBHOOK_ENDPOINT "http://192.168.20.23:3001/api/getdevicecredentials"
 
 #include <Arduino.h>
 
@@ -15,7 +15,7 @@ class DashTemplate
 public:
   // User functions
   void send_data(int position, bool save, String value);
-  void map_data(int position, float lat, float lng); // Map widget data
+  void map_data(int position, bool save, String lat, String lng); // Map widget data
   String receive_data(int position);
   void setup_ntp();
   // Template functions
