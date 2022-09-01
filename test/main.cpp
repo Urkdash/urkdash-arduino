@@ -15,7 +15,7 @@ const char *wifi_ssid = "Redmi";         // your network SSID (name)
 const char *wifi_password = "Redmi2020"; // your network password
 
 String dev_id = "12345";
-String webhook_password = "0J699GBOeZ";
+String webhook_password = "bsg0j5Nl7H";
 
 DashTemplate dash;
 Adafruit_SHTC3 shtc3 = Adafruit_SHTC3();
@@ -141,21 +141,37 @@ void data()
   hum = humidity.relative_humidity;
   pressure = get_pressure();
   wifi_intensity = WiFi.RSSI();
-
+ 
   if (pms.read(datas))
   {
-
     PM01Value = datas.PM_AE_UG_1_0;
     PM2_5Value = datas.PM_AE_UG_2_5;
     PM10Value = datas.PM_AE_UG_10_0;
   }
+}
 
-  dash.input(0, String(temperature));
-  dash.input(1, String(temperature));
-  dash.input(2, String(hum));
-  dash.input(3, String(pressure));
-  dash.input(4, String(PM01Value));
-  dash.input(5, String(PM2_5Value));
-  dash.input(6, String(PM10Value));
-  dash.input(7, String(wifi_intensity));
+void send_data_to_dashboard()
+{
+  if (temperature == !NULL)
+  {
+    dash.send_data(0, true, String(temperature));
+  } else if (hum == !NULL)
+  {
+    dash.send_data(1, true, String(hum));
+  } else if (pressure == !NULL)
+  {
+    dash.send_data(2, true, String(pressure));
+  } else if (wifi_intensity == !NULL)
+  {
+    dash.send_data(3, true, String(PM01Value));
+  } else if (PM01Value == !NULL)
+  {
+    dash.send_data(4, true, String(PM2_5Value));
+  } else if (PM2_5Value == !NULL)
+  {
+    dash.send_data(5, true, String(PM10Value));
+  } else if (PM10Value == !NULL)
+  {
+    dash.send_data(6, true, String(wifi_intensity));
+  }
 }
