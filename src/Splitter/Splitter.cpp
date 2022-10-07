@@ -1,16 +1,12 @@
-//Creado por Pablo Sánchez (Ioticos) para ser compartido, modificado, mejorado sin necesidad de autorización alguna.
-//Saludos!
-
-
 #include <Arduino.h>
-#include "IoTicosSplitter.h"
+#include "Splitter.h"
 
-IoTicosSplitter::IoTicosSplitter()
+Splitter::Splitter()
 {
 
 }
 
-String IoTicosSplitter::split(String data, char separator, int index)
+String Splitter::split(String data, char separator, int index)
 {
 	int found = 0;
 	int strIndex[] = {0, -1};
