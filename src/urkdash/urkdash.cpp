@@ -4,7 +4,7 @@
 #include <NTPClient.h>
 #include <PubSubClient.h>
 #include <HTTPClient.h>
-#include "IoTicosSplitter.h"
+#include "Splitter.h"
 #include "urkdash.h"
 #if defined(ESP8266) || defined(ESP32)
 #include <WiFi.h>
