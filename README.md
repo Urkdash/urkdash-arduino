@@ -4,12 +4,12 @@ This library provides a way to connect to [Urkdash](https://urkdash.com) as easy
 
 ## Examples
 
-The library comes with a number of example sketches. See [examples](https://github.com/Urkdash/urkdash_esp32/wiki)
+The library comes with a number of example sketches. See [examples](https://github.com/Urkdash/urkdash-arduino/tree/master/examples)
 within the Arduino application.
 
 ## Documentation
 
-All information and documentation can be found on our [wiki](https://github.com/Sirius-py/Ceres_IoT/wiki).
+All information and documentation can be found on our [wiki](https://github.com/Urkdash/urkdash-arduino/wiki).
 
 ## Limitations
 
