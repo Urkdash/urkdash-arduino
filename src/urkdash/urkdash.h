@@ -4,9 +4,9 @@
 #define NTP_ADRESS "co.pool.ntp.org"
 #define NTP_OFFSET 0
 #define NTP_INTERVAL 60 * 1000
-#define MQTT_SERVER "192.168.20.23"
+#define MQTT_SERVER "urkdash.com"
 #define MQTT_PORT 1883
-#define WEBHOOK_ENDPOINT "http://192.168.20.23:3001/api/getdevicecredentials"
+#define WEBHOOK_ENDPOINT "http://urkdash.com:3001/api/getdevicecredentials"
 
 #include <Arduino.h>
 
