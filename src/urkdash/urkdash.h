@@ -22,7 +22,6 @@ public:
   bool get_mqtt_credentials();
   bool reconnect();
   void setup_credentials(String dId, String webhook_pass);
-  void process_incoming_message(String topic, String incoming);
   void send_data_to_broker();
   void check_mqtt_connection();
   void clear();
