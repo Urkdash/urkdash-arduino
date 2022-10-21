@@ -16,7 +16,7 @@ WiFiUDP ntpUDP;
 WiFiClient espclient;
 PubSubClient client(espclient);
 NTPClient timeClient(ntpUDP, NTP_ADRESS, NTP_OFFSET, NTP_INTERVAL);
-IoTicosSplitter splitter;
+Splitter splitter;
 String last_received_msg = "";
 String last_received_topic = "";
 long varsLastSend[20];
