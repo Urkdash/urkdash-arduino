@@ -17,14 +17,11 @@ public:
   void send_data(int position, bool save, String value);
   void map_data(int position, bool save, String lat, String lng); // Map widget data
   String receive_data(int position);
-  void setup_ntp();
   // Template functions
   bool get_mqtt_credentials();
   bool reconnect();
   void setup_credentials(String dId, String webhook_pass);
-  void send_data_to_broker();
   void check_mqtt_connection();
-  void clear();
   void print_stats();
 
 private:

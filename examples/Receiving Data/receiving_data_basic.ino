@@ -12,101 +12,63 @@
 
 // Libraries
 #include <WiFi.h>
-#include "urkdash.h"
+#include <WiFiManager.h>
+#include <urkdash.h>
 
 #define LED_PIN 2
 
-const char *wifi_ssid = "YOUR_SSID";         // your network SSID (name)
-const char *wifi_password = "YOUR_PASSWORD"; // your network password
-
-String dev_id = "YOUR_DEVICE_ID";                 // your device id
-String webhook_password = "YOUR_DEVICE_PASSWORD"; // your device password
+String dev_id = "REPLACE_WITH_YOUR_DEVICE_ID";                 // your device id
+String webhook_password = "REPLACE_WITH_YOUR_DEVICE_PASSWORD"; // your device password
 
 DashTemplate dash;
 
-// Functions
 void setup_wifi();
 void data();
 
 void setup_wifi()
 {
-    Serial.print("\n\n\nWiFi Connection in Progress");
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(wifi_ssid, wifi_password);
+  WiFi.mode(WIFI_STA);
 
-    int counter = 0;
+  Serial.begin(9600);
 
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        delay(500);
-        Serial.print(".");
-        counter++;
+  WiFiManager wm;
 
-        if (counter > 10)
-        {
-            Serial.print("  ⤵");
-            Serial.print("\n\n         Ups WiFi Connection Failed :( ");
-            Serial.println(" -> Restarting...");
-            delay(2000);
-            ESP.restart();
-        }
+  bool res;
 
-        Serial.print("  ⤵");
-    }
+  res = wm.autoConnect("AutoConnectAP", "password");
 
-    // Print the IP address
+  if (!res)
+  {
+    Serial.println("Failed to connect");
+    ESP.restart();
+  }
+  else
+  {
     Serial.println("\n\n         WiFi Connection -> SUCCESS :)");
-    Serial.print("\n         Local IP -> ");
-    Serial.print(WiFi.localIP());
-
+    delay(1000);
+    // Print the IP address
+    Serial.print("\n\n         Local IP -> ");
+    Serial.println(WiFi.localIP());
+    delay(1000);
     // Print WiFi Signal Quality Strength
     Serial.print("\n         WiFi Intensity -> ");
     Serial.print(WiFi.RSSI());
     Serial.print(" dBm");
-
-    // Print WiFi Signal Status
-    if (WiFi.RSSI() < -90)
-    {
-        Serial.print("\n         WiFi Status -> ");
-        Serial.print("Unusable");
-    }
-    else if (WiFi.RSSI() < -80)
-    {
-        Serial.print("\n         WiFi Status -> ");
-        Serial.print("Not Good");
-    }
-    else if (WiFi.RSSI() < -70)
-    {
-        Serial.print("\n         WiFi Status -> ");
-        Serial.print("Okay");
-    }
-    else if (WiFi.RSSI() < -60)
-    {
-        Serial.print("\n         WiFi Status -> ");
-        Serial.print("Good");
-    }
-    else
-    {
-        Serial.print("\n         WiFi Status -> ");
-        Serial.print("Excellent");
-    }
+    delay(2000);
+  }
 }
 
 void setup()
 {
-    Serial.begin(9600);                               // Serial Monitor Begin
-    pinMode(LED_PIN, OUTPUT);                         // LED Pin Mode
-    dash.setup_credentials(dev_id, webhook_password); // Setup Credentials
-    dash.clear();                                     // clear the screen
-    setup_wifi();                                     // setup wifi connection
-    dash.setup_ntp();                                 // setup ntp connection
+  setup_wifi();                                     // setup wifi connection
+  pinMode(LED_PIN, OUTPUT);
+  dash.setup_credentials(dev_id, webhook_password); // Setup Credentials
 }
 
 void loop()
 {
-    data();                       // get data from the dashboard
-    dash.check_mqtt_connection(); // check mqtt connection
-    dash.send_data_to_broker();   // send data to broker
+  data();                       // get data from the dashboard
+  dash.check_mqtt_connection(); // check mqtt connection
 }
 
 void data()

@@ -77,7 +77,7 @@ void callback(char *topic, byte *payload, unsigned int length)
     outputs();
 }
 
-void DashTemplate::setup_ntp()
+void setup_ntp()
 {
     timeClient.begin();
     while (!timeClient.update())
@@ -126,17 +126,19 @@ void info_devices()
     mqtt_data_doc["info"]["firmwareVersion"] = "ESP32";
 }
 
-String getDate(){
-  String dateString = "";
-  timeClient.update();
-  dateString = timeClient.getFormattedTime();
-  return dateString;
+String getDate()
+{
+    String dateString = "";
+    timeClient.update();
+    dateString = timeClient.getFormattedTime();
+    return dateString;
 }
 
 void DashTemplate::setup_credentials(String dId, String webhook_pass)
 {
     device_id = dId;
     device_pass = webhook_pass;
+    clear();
 }
 
 bool DashTemplate::get_mqtt_credentials()
@@ -212,7 +214,7 @@ bool DashTemplate::reconnect()
     return true;
 }
 
-void DashTemplate::send_data_to_broker()
+void send_data_to_broker()
 {
     long now = millis();
 
@@ -325,7 +327,7 @@ void DashTemplate::print_stats()
     }
 }
 
-void DashTemplate::clear()
+void clear()
 {
     Serial.write(27);    // ESC command
     Serial.print("[2J"); // clear screen command
