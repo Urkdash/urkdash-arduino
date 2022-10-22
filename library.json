@@ -1,0 +1,17 @@
+{
+    "name": "Urkdash-Arduino",
+    "keywords": "mqtt, iot",
+    "description": "A esp32/8266 library for Urkdash.com",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Urkdash/urkdash-arduino.git"
+    },
+    "version": "1.1",
+    "exclude": "tests",
+    "examples": "examples/*/*.ino",
+    "frameworks": "arduino",
+    "platforms": [
+        "espressif8266",
+        "espressif32"
+    ]
+}
