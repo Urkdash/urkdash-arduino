@@ -10,6 +10,8 @@
     "exclude": "tests",
     "examples": "examples/*/*.ino",
     "frameworks": "arduino",
+    "licence": "LGPL-2.1",
+    "homepage": "https://urkdash.com/",
     "platforms": [
         "espressif8266",
         "espressif32"

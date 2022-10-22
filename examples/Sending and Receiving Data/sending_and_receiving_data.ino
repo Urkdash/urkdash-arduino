@@ -10,7 +10,7 @@
       - The fourth widget is a button.
       - The fifth widget is a switch.
 
-    NOTE: This .ino file is used for Arduino IDE and not for PlatformIO.
+    NOTE: If you're using Platformio change the file for .cpp and add the <Arduino.h> Library
 */
 
 // Libraries

@@ -4,7 +4,7 @@
     - This code is an example of how to use the Dashboard library with input widgets.
     - In this case the first widget has the zero position [0] and the second widget has the one position [1] (you get the idea).
 
-    NOTE: This .ino file is used for Arduino IDE and not for PlatformIO.
+    NOTE: If you're using Platformio change the file for .cpp and add the <Arduino.h> Library
 */
 
 // Libraries
