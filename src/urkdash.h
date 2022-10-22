@@ -10,7 +10,7 @@
 
 #include <Arduino.h>
 
-class DashTemplate
+class Urkdash
 {
 public:
   // User functions
@@ -18,11 +18,9 @@ public:
   void map_data(int position, bool save, String lat, String lng); // Map widget data
   String receive_data(int position);
   // Template functions
-  bool get_mqtt_credentials();
   bool reconnect();
   void setup_credentials(String dId, String webhook_pass);
   void check_mqtt_connection();
-  void print_stats();
 
 private:
 };

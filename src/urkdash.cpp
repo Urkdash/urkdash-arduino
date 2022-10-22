@@ -108,7 +108,7 @@ void setup_ntp()
     }
 }
 
-String DashTemplate::receive_data(int position)
+String Urkdash::receive_data(int position)
 {
     widget_position = position;
     return outputs();
@@ -120,7 +120,7 @@ String outputs()
     return mqtt_data_doc["variables"][widget_position]["last"]["value"];
 }
 
-void DashTemplate::send_data(int position, bool save, String value)
+void Urkdash::send_data(int position, bool save, String value)
 {
     mqtt_data_doc["variables"][position]["last"]["value"] = value;
     mqtt_data_doc["variables"][position]["last"]["save"] = int(save);
@@ -128,7 +128,7 @@ void DashTemplate::send_data(int position, bool save, String value)
     info_devices();
 }
 
-void DashTemplate::map_data(int position, bool save, String lat, String lng)
+void Urkdash::map_data(int position, bool save, String lat, String lng)
 {
     lat.concat("/");
     lat.concat(lng);
@@ -156,7 +156,7 @@ String getDate()
     return dateString;
 }
 
-void DashTemplate::setup_credentials(String dId, String webhook_pass)
+void Urkdash::setup_credentials(String dId, String webhook_pass)
 {
     device_id = dId;
     device_pass = webhook_pass;
@@ -164,7 +164,7 @@ void DashTemplate::setup_credentials(String dId, String webhook_pass)
     clear();
 }
 
-bool DashTemplate::get_mqtt_credentials()
+bool get_mqtt_credentials()
 {
     Serial.print("\n\n\nGetting MQTT Credentials from WebHook");
     delay(1000);
@@ -203,7 +203,7 @@ bool DashTemplate::get_mqtt_credentials()
     return true;
 }
 
-bool DashTemplate::reconnect()
+bool Urkdash::reconnect()
 {
     if (!get_mqtt_credentials())
     {
@@ -285,7 +285,7 @@ void send_data_to_broker()
     }
 }
 
-void DashTemplate::check_mqtt_connection()
+void Urkdash::check_mqtt_connection()
 {
     if (WiFi.status() != WL_CONNECTED)
     {
@@ -316,7 +316,7 @@ void DashTemplate::check_mqtt_connection()
     }
 }
 
-void DashTemplate::print_stats()
+void print_stats()
 {
     long now = millis();
 

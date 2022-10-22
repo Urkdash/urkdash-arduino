@@ -23,7 +23,7 @@
 String dev_id = "REPLACE_WITH_YOUR_DEVICE_ID";                 // your device id
 String webhook_password = "REPLACE_WITH_YOUR_DEVICE_PASSWORD"; // your device password
 
-DashTemplate dash;
+Urkdash dash;
 
 void setup_wifi();
 void data();

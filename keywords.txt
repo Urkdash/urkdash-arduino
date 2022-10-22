@@ -1,0 +1,16 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Urkdash	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+send_data	            KEYWORD2
+map_data	            KEYWORD2
+receive_data	        KEYWORD2
+check_mqtt_connections	KEYWORD2
+setup_credentials	    KEYWORD2
+reconnect               KEYWORD2
