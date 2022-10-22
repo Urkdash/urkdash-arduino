@@ -15,6 +15,7 @@ All information and documentation can be found on our [wiki](https://github.com/
 
  - Right now is only available with Colombia's timestamp.
  - It can only publish to six widgets at the same time.
+ - The 'receive_data' is not working well right now.
 
 ## Compatible Hardware
 
