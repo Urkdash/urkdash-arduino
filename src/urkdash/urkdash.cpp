@@ -4,7 +4,6 @@
 #include <NTPClient.h>
 #include <PubSubClient.h>
 #include <HTTPClient.h>
-#include "Splitter.h"
 #include "urkdash.h"
 #if defined(ESP8266) || defined(ESP32)
 #include <WiFi.h>
@@ -40,6 +39,29 @@ void send_data_to_broker();
 void callback(char *topic, byte *payload, unsigned int length);
 void clear();
 void print_stats();
+
+// Splitter class
+Splitter::Splitter()
+{
+
+}
+
+String Splitter::split(String data, char separator, int index)
+{
+	int found = 0;
+	int strIndex[] = {0, -1};
+	int maxIndex = data.length() - 1;
+
+	for (int i = 0; i <= maxIndex && found <= index; i++) {
+		if (data.charAt(i) == separator || i == maxIndex) {
+			found++;
+			strIndex[0] = strIndex[1] + 1;
+			strIndex[1] = (i == maxIndex) ? i + 1 : i;
+		}
+	}
+
+	return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+}
 
 // TEMPLATE FUNCTIONS
 void callback(char *topic, byte *payload, unsigned int length)
@@ -84,7 +106,6 @@ void setup_ntp()
     {
         timeClient.forceUpdate();
     }
-    client.setCallback(callback);
 }
 
 String DashTemplate::receive_data(int position)
@@ -95,6 +116,7 @@ String DashTemplate::receive_data(int position)
 
 String outputs()
 {
+    varsLastSend[4] = 0;
     return mqtt_data_doc["variables"][widget_position]["last"]["value"];
 }
 
@@ -138,6 +160,7 @@ void DashTemplate::setup_credentials(String dId, String webhook_pass)
 {
     device_id = dId;
     device_pass = webhook_pass;
+    client.setCallback(callback);
     clear();
 }
 
