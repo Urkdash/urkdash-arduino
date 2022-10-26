@@ -15,10 +15,12 @@
 
 // Libraries
 #include <WiFi.h>
-#include <WiFiManager.h>
 #include <urkdash.h>
 
 #define LED_PIN 2
+
+const char *wifi_ssid = "YOUR_SSID";         // your network SSID (name)
+const char *wifi_password = "YOUR_PASSWORD"; // your network password
 
 String dev_id = "REPLACE_WITH_YOUR_DEVICE_ID";                 // your device id
 String webhook_password = "REPLACE_WITH_YOUR_DEVICE_PASSWORD"; // your device password
@@ -30,39 +32,45 @@ void data();
 
 void setup_wifi()
 {
+  Serial.print("\n\n\nWiFi Connection in Progress");
   WiFi.mode(WIFI_STA);
 
-  Serial.begin(9600);
+  WiFi.begin(wifi_ssid, wifi_password);
 
-  WiFiManager wm;
+  int counter = 0;
 
-  bool res;
-
-  res = wm.autoConnect("AutoConnectAP", "password");
-
-  if (!res)
+  while (WiFi.status() != WL_CONNECTED)
   {
-    Serial.println("Failed to connect");
-    ESP.restart();
-  }
-  else
-  {
-    Serial.println("\n\n         WiFi Connection -> SUCCESS :)");
-    delay(1000);
-    // Print the IP address
-    Serial.print("\n\n         Local IP -> ");
-    Serial.println(WiFi.localIP());
-    delay(1000);
-    // Print WiFi Signal Quality Strength
-    Serial.print("\n         WiFi Intensity -> ");
-    Serial.print(WiFi.RSSI());
-    Serial.print(" dBm");
-    delay(2000);
-  }
+      delay(500);
+      Serial.print(".");
+      counter++;
+
+      if (counter > 10)
+      {
+          Serial.print("  ⤵");
+          Serial.print("\n\n         Ups WiFi Connection Failed :( ");
+          Serial.println(" -> Restarting...");
+          delay(2000);
+          ESP.restart();
+      }
+
+        Serial.print("  ⤵");
+    }
+  
+  // Print the IP address
+  Serial.println("\n\n         WiFi Connection -> SUCCESS :)");
+  Serial.print("\n         Local IP -> ");
+  Serial.print(WiFi.localIP());
+
+  // Print WiFi Signal Quality Strength
+  Serial.print("\n         WiFi Intensity -> ");
+  Serial.print(WiFi.RSSI());
+  Serial.print(" dBm");
 }
 
 void setup()
 {
+  Serial.begin(9600);                               // Serial Monitor Begin
   setup_wifi();                                     // setup wifi connection
   pinMode(LED_PIN, OUTPUT);
   dash.setup_credentials(dev_id, webhook_password); // Setup Credentials
