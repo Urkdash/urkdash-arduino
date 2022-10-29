@@ -67,6 +67,7 @@ within the Arduino application.
 
 ```
 // Libraries
+#include <Arduino.h>
 #include <WiFi.h>
 #include <urkdash.h>
 
@@ -148,6 +149,7 @@ void data()
 
 ```
 // Libraries
+#include <Arduino.h>
 #include <WiFi.h>
 #include <urkdash.h>
 
@@ -247,6 +249,7 @@ void data()
 
 ```
 // Libraries
+#include <Arduino.h>
 #include <WiFi.h>
 #include <urkdash.h>
 
