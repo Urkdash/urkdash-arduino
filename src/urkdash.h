@@ -18,7 +18,6 @@ public:
   void map_data(int position, bool save, String lat, String lng); // Map widget data
   String receive_data(int position);
   // Template functions
-  void clear();
   bool reconnect();
   void setup_credentials(String dId, String webhook_pass);
   void check_mqtt_connection();
