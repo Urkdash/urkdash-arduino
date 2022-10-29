@@ -350,7 +350,7 @@ void print_stats()
     }
 }
 
-void Urkdash::clear()
+void clear()
 {
     Serial.write(27);    // ESC command
     Serial.print("[2J"); // clear screen command
