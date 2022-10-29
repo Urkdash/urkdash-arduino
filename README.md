@@ -40,7 +40,7 @@ Disclaimer: **Currently this library depends on three other libraries [PubSubCli
 3. Create a new PlatformIO project and select a ESP32 or ESP8266 Board
 
 <p align="center">
-<img align="center" src="assets/img/platformio_createProject2.png" width="600px">
+<img align="center" src="assets/img/platformio_createProject2.jpg" width="600px">
 </p>
 
 4. Copy the `platformio.ini` of this [library](https://github.com/Urkdash/urkdash-arduino/blob/main/platformio.ini)
