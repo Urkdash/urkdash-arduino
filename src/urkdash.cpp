@@ -161,7 +161,10 @@ void Urkdash::setup_credentials(String dId, String webhook_pass)
     device_id = dId;
     device_pass = webhook_pass;
     client.setCallback(callback);
-    clear();
+    Serial.write(27);    // ESC command
+    Serial.print("[2J"); // clear screen command
+    Serial.write(27);
+    Serial.print("[H"); // cursor to home command
 }
 
 bool get_mqtt_credentials()
@@ -323,7 +326,10 @@ void print_stats()
     if (now - lastStats > 2000)
     {
         lastStats = millis();
-        clear();
+        Serial.write(27);    // ESC command
+        Serial.print("[2J"); // clear screen command
+        Serial.write(27);
+        Serial.print("[H"); // cursor to home command
 
         Serial.print("\n");
         Serial.print("\n╔══════════════════════════╗");
