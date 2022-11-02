@@ -26,7 +26,7 @@ int period = 10000;
 unsigned long time_now = 0;
 String device_id;
 String device_pass;
-DynamicJsonDocument mqtt_data_doc(4096);
+DynamicJsonDocument mqtt_data_doc(2048);
 
 // LIST OF FUNCTIONS
 bool get_mqtt_credentials();
@@ -323,7 +323,7 @@ void print_stats()
     if (now - lastStats > 2000)
     {
         lastStats = millis();
-	clear();
+        clear();
 
         Serial.print("\n");
         Serial.print("\n╔══════════════════════════╗");
