@@ -26,7 +26,7 @@ int period = 10000;
 unsigned long time_now = 0;
 String device_id;
 String device_pass;
-DynamicJsonDocument mqtt_data_doc(2048);
+DynamicJsonDocument mqtt_data_doc(4096);
 
 // LIST OF FUNCTIONS
 bool get_mqtt_credentials();
