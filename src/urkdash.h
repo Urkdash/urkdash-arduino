@@ -4,7 +4,7 @@
 #define NTP_ADRESS "co.pool.ntp.org"
 #define NTP_OFFSET 0
 #define NTP_INTERVAL 60 * 1000
-#define MQTT_SERVER "139.144.35.147" //app.urkdash.com
+#define MQTT_SERVER "139.144.224.115" //app.urkdash.com
 #define MQTT_PORT 8880
 #define WEBHOOK_ENDPOINT "https://app.urkdash.com/api/getdevicecredentials"
 
